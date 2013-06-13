@@ -56,6 +56,10 @@ function sendMessage(msg) {
     request.post("https://api.groupme.com/v3/bots/post", data, function(err, response, body) {
       if(err)
         console.log("[DEBUG] An error has occured sending a message");
+      else {
+        console.log(response);
+        console.log(body);
+      }
     }); 
 }
 
