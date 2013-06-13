@@ -17,6 +17,7 @@ exports.handleMessage = function(req, res) {
     if(!validMessage(req.body)) {
         return;
     }
+    console.log(req.body);
     if (req.body.text == "!quotelast") {
         if (lastMessages.isEmpty()) {
             res.end();
@@ -27,7 +28,7 @@ exports.handleMessage = function(req, res) {
             if (err)
                 console.log(err);
             else 
-                console.log("Quote added!");
+                console.log("[DEBUG] Quote added to database!");
             return;
         });
         res.end();
@@ -37,7 +38,7 @@ exports.handleMessage = function(req, res) {
         //get a random quote
         db.collection("quotes").find().toArray(function(err, list) {
             list.shuffle();
-            console.log("Randomly selected: ", list[0]);
+            console.log("[DEBUG] Randomly selected: ", list[0]);
             sendMessage(list[0]);
         });
         res.end();
@@ -45,7 +46,7 @@ exports.handleMessage = function(req, res) {
     }
     var msg = { user: req.body.name, text: req.body.text };
     lastMessages.add(msg);
-    console.log("Message received");
+    console.log("[DEBUG] Message received");
     res.end();
 }
 
@@ -53,7 +54,7 @@ function sendMessage(msg) {
     var data = { text: msg.name + ": " + msg.text, bot_id: BOT_ID };
     request.post("https://api.groupme.com/v3/bots/post", data, function(err, response, body) {
       if(err)
-        console.log("An error has occured sending a message");
+        console.log("[DEBUG] An error has occured sending a message");
     }); 
 }
 
