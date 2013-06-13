@@ -8,7 +8,7 @@ var FixedBuffer = require('../lib/fixed_buffer');
 var Array = require('../lib/randomize');
 var db = mongo.db('herokuuser:lol123@ds029328.mongolab.com:29328/heroku_app16111613', { safe:true });
 var lastMessages = new FixedBuffer(10);
-var BOT_ID = "43db8c979fd9effda6ed3632be";
+var BOT_ID = "3fbb4f691e4e00ab72c3c5bdd7";
 
 exports.index = function(req, res){
     res.render('index', { title: 'Express' });
