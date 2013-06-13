@@ -39,7 +39,6 @@ exports.handleMessage = function(req, res) {
         //get a random quote
         db.collection("quotes").find().toArray(function(err, list) {
             list.shuffle();
-            console.log("[DEBUG] Randomly selected: ", list[0]);
             sendMessage(list[0]);
         });
         res.end();
@@ -52,8 +51,9 @@ exports.handleMessage = function(req, res) {
 }
 
 function sendMessage(msg) {
-    var data = { form: { text: msg.name + ": " + msg.text, bot_id: BOT_ID } };
-    data = JSON.stringify(data);
+    var data = { form: { text: msg.user + ": " + msg.text, bot_id: BOT_ID } };
+    console.log("SENDING: ");
+    console.log(data);
     request.post("https://api.groupme.com/v3/bots/post", data, function(err, response, body) {
       if(err)
         console.log("[DEBUG] An error has occured sending a message");
