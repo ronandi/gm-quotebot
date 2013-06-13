@@ -2,11 +2,12 @@
 /*
  * GET home page.
  */
+var request = require('request');
 var mongo = require('mongoskin');
+var FixedBuffer = require('../lib/fixed_buffer');
+var Array = require('../lib/randomize');
 var db = mongo.db('herokuuser:lol123@ds029328.mongolab.com:29328/heroku_app16111613', { safe:true });
 var lastMessages = new FixedBuffer(10);
-var Array = require('../lib/randomize');
-var request = require('request');
 
 exports.index = function(req, res){
     res.render('index', { title: 'Express' });
@@ -51,7 +52,8 @@ exports.handleMessage = function(req, res) {
 function sendMessage(msg) {
     var data = { text: msg.name + ": " + msg.text, bot_id: BOT_ID };
     request.post("https://api.groupme.com/v3/bots/post", data, function(err, response, body) {
-
+      if(err)
+        console.log("An error has occured sending a message");
     }); 
 }
 
@@ -61,22 +63,3 @@ function validMessage(body) {
     return true;
 }
 
-function FixedBuffer(size) {
-    this.limit = size;
-    this.buffer = [];
-}
-
-FixedBuffer.prototype.add = function(elem) {
-    if(this.buffer.length == this.limit) {
-        this.buffer.shift();
-    }
-    this.buffer.push(elem);
-}
-
-FixedBuffer.prototype.getLast = function() {
-    return this.buffer[this.buffer.length-1];
-}
-
-FixedBuffer.prototype.isEmpty = function() {
-    return this.buffer.length == 0;
-}
