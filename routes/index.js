@@ -52,7 +52,7 @@ exports.handleMessage = function(req, res) {
 }
 
 function sendMessage(msg) {
-    var data = { text: msg.name + ": " + msg.text, bot_id: BOT_ID };
+    var data = { form: { text: msg.name + ": " + msg.text, bot_id: BOT_ID } };
     data = JSON.stringify(data);
     request.post("https://api.groupme.com/v3/bots/post", data, function(err, response, body) {
       if(err)
